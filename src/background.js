@@ -14,13 +14,13 @@ async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     useContentSize: true,
-    width: 550,
-    height: 230,
+    width: 650,
+    height: 250,
     show: false, //解决闪烁
     transparent: true,
     frame: false, //是否有边框
-    minWidth: 500,
-    minHeight: 260,
+    minWidth: 650,
+    minHeight: 250,
     resizable: false, //可否缩放
     movable: true, //是否可移动
     fullscreenable: false, //是否可以进入全屏状态
