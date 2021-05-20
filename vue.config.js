@@ -1,8 +1,22 @@
 module.exports = {
   pluginOptions: {
     electronBuilder: {
-      nodeIntegration: true
+      nodeIntegration: true, //开启nodejs环境
+      builderOptions: {
+        nsis: {
+          //https://www.electron.build/configuration/nsis
+          // 是否一键安装
+          oneClick: false,
+          // 允许请求提升
+          allowElevation: true,
+          //是否允许用户更改安装目录。
+          allowToChangeInstallationDirectory: true,
+          // 图标名称
+          shortcutName: 'demo'
+        }
+      }
     }
+    //C:\Users\Administrator\AppData\Local\Programs\demo\demo.exe
   },
   css: {
     loaderOptions: {

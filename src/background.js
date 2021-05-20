@@ -14,37 +14,43 @@ async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     useContentSize: true,
-    width: 500,
-    height: 260,
+    width: 550,
+    height: 230,
     show: false, //解决闪烁
     transparent: true,
     frame: false, //是否有边框
     minWidth: 500,
     minHeight: 260,
     resizable: false, //可否缩放
+    movable: true, //是否可移动
+    fullscreenable: false, //是否可以进入全屏状态
     webPreferences: {
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: true,
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
 
+  //解决闪烁
   win.once('ready-to-show', () => {
     win.show()
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
+    // 如果处于开发模式，则加载dev服务器的url
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
   } else {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  //缩小
   ipcMain.on('min', (e) => win.minimize())
   // ipcMain.on('max', (e) => win.maximize())
+  //关闭
   ipcMain.on('close', (e) => win.close())
+  //锁定
+  ipcMain.on('move', (e) => (win.movable = !win.movable))
 }
 
 //监听
