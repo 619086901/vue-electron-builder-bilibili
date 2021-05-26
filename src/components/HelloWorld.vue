@@ -4,27 +4,28 @@
     <span class="close" @click="close">×</span>
     <span class="suo" @click="suo" v-html="fensi.rawhtml"></span>
 
-    <div>
-      <ul class="ul1">
-        <span class="span1">粉丝数:</span>
-        <li class="li1">{{ fensi.follower }}</li>
-        <!--是否添加flase过渡 ‘+’号的颜色-->
-        <span
-          :class="[
-            'follower',
-            fensi.a.flash ? 'flash' : '',
-            fensi.a.add ? 'addcolor' : 'deletecolor'
-          ]"
-        >
-          <!--是否添加+号-->
-          <template v-if="fensi.a.add">
-            <span>+</span>
-          </template>
-          <!--增加的粉丝-->
-          <span>{{ fensi.a.number }}</span>
-        </span>
-      </ul>
+    <div class="ul1">
+      <span v-html="fensi.xiaochou"></span>
+      <span class="span1">粉丝数:</span>
+      <br />
+      <span class="span2">{{ fensi.follower }}</span>
+      <!--是否添加flase过渡 ‘+’号的颜色-->
+      <span
+        :class="[
+          'follower',
+          fensi.a.flash ? 'flash' : '',
+          fensi.a.add ? 'addcolor' : 'deletecolor'
+        ]"
+      >
+        <!--是否添加+号-->
+        <template v-if="fensi.a.add">
+          <span>+</span>
+        </template>
+        <!--增加的粉丝-->
+        <span>{{ fensi.a.number }}</span>
+      </span>
     </div>
+
     <div>
       <ul class="ul2">
         <span>关注数:</span>
@@ -61,7 +62,7 @@
           <template v-if="fensi.c.add">
             <span>+</span>
           </template>
-          <!--增加的关注数-->
+          <!--增加的播放数-->
           <span>{{ fensi.c.number }}</span>
         </span>
 
@@ -80,7 +81,7 @@
           <template v-if="fensi.d.add">
             <span>+</span>
           </template>
-          <!--增加的关注数-->
+          <!--增加的评论数-->
           <span>{{ fensi.d.number }}</span>
         </span>
 
@@ -99,14 +100,14 @@
           <template v-if="fensi.e.add">
             <span>+</span>
           </template>
-          <!--增加的关注数-->
+          <!--增加的弹幕数-->
           <span>{{ fensi.e.number }}</span>
         </span>
       </ul>
     </div>
 
     <button @click="start">获取</button>
-    <span class="span2">查询ID:</span>
+    <span class="span3">查询ID:</span>
     <input type="text" name="input1" id="input1" v-model="fensi.id" />
   </div>
 </template>
@@ -139,6 +140,8 @@ export default {
       time: 15000,
       //锁定开关
       rawhtml: `&#128077;`,
+      //小丑图标
+      xiaochou: `&#129313;`,
       //增加的粉丝数
       a: {
         number: 0, //增加的数量
@@ -232,7 +235,7 @@ export default {
 
     //监听返回的播放数
     ipcRenderer.on('playbili', (event, arg) => {
-      //粉丝数大于之前粉丝则添加+号
+      //播放数大于之前粉丝则添加+号
       if (arg.sum > fensi.sum) {
         fensi.c.add = true
       } else {
@@ -318,35 +321,32 @@ export default {
 .tm {
   overflow: hidden;
 }
-ul {
-  //字体颜色
-  color: transparent;
-  background: linear-gradient(90deg, #00ff8a, #8e038c);
-  background-clip: text;
-}
 .ul1 {
   list-style: none;
   padding: 0;
-  .li1 {
-    font-size: 62px;
-  }
   .span1 {
     font-size: 16px;
+    //字体颜色
+    color: transparent;
+    background: linear-gradient(90deg, #00ff8a, #8e038c);
+    background-clip: text;
+  }
+  .span2 {
+    font-size: 60px;
+    //字体颜色
+    color: transparent;
+    background: linear-gradient(90deg, #00ff8a, #8e038c);
+    background-clip: text;
   }
   span {
     //取消文本选择
-    -webkit-user-select: none;
-    -webkit-app-region: drag;
-  }
-  li {
-    //取消文本选择
-    -webkit-user-select: none;
+    user-select: none;
     -webkit-app-region: drag;
   }
   //粉丝样式
   .follower {
     position: absolute;
-    margin-left: 80px;
+    margin-left: -80px;
     font-size: 25px;
     opacity: 0;
   }
@@ -366,22 +366,22 @@ ul {
   @keyframes fensi {
     from {
       opacity: 1;
-      margin-top: -50px;
+      margin-top: 0px;
     }
     to {
       opacity: 0;
-      margin-top: -80px;
+      margin-top: -50px;
     }
   }
 }
 //查询ID
-.span2 {
+.span3 {
   //字体颜色
   color: transparent;
   background: linear-gradient(90deg, #00ff8a, #8e038c);
   background-clip: text;
   //取消文本选择
-  -webkit-user-select: none;
+  user-select: none;
   -webkit-app-region: drag;
 }
 //关注数列表
@@ -392,47 +392,47 @@ ul {
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 0;
-
+  width: 600px;
+  //字体颜色
+  color: transparent;
+  background: linear-gradient(90deg, #00ff8a, #8e038c);
+  background-clip: text;
   span {
-    -webkit-user-select: none;
+    user-select: none;
     -webkit-app-region: drag;
-    margin-left: 1px;
+    font-size: 16px;
   }
   li {
     //取消文本选择
-    -webkit-user-select: none;
+    user-select: none;
     -webkit-app-region: drag;
-    margin-left: 10px;
+    line-height: 25px;
   }
   //关注数按钮
   .following {
     position: absolute;
-    margin-left: 100px;
-    font-size: 25px;
+    margin-left: 80px;
     opacity: 0;
   }
 
   //播放量按钮
   .sum {
     position: absolute;
-    margin-left: 220px;
-    font-size: 25px;
+    margin-left: 240px;
     opacity: 0;
   }
 
   //评论量按钮
   .comment {
     position: absolute;
-    margin-left: 380px;
-    font-size: 25px;
+    margin-left: 400px;
     opacity: 0;
   }
 
   //弹幕数按钮
   .video_review {
     position: absolute;
-    margin-left: 510px;
-    font-size: 25px;
+    margin-left: 550px;
     opacity: 0;
   }
 
@@ -472,7 +472,7 @@ button {
   border: none; //取消默认样式
   outline: none; //取消选择样式
   //取消文本选择
-  -webkit-user-select: none;
+  user-select: none;
 }
 button:hover {
   border-bottom: 2px solid #bd16df;
@@ -500,7 +500,7 @@ input:hover {
   font-size: 30px;
   color: white;
   //取消文本选择
-  -webkit-user-select: none;
+  user-select: none;
 }
 .close:hover {
   color: red;
@@ -521,7 +521,7 @@ input:hover {
   font-size: 30px;
   color: white;
   //取消文本选择
-  -webkit-user-select: none;
+  user-select: none;
 }
 .min:hover {
   color: red;
@@ -542,7 +542,7 @@ input:hover {
   font-size: 20px;
   color: white;
   //取消文本选择
-  -webkit-user-select: none;
+  user-select: none;
 }
 .suo:hover {
   color: red;
