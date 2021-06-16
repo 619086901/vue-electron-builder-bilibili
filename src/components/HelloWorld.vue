@@ -2,7 +2,10 @@
   <div :class="['tm']">
     <span class="min" @click="min">-</span>
     <span class="close" @click="close">×</span>
-    <span class="suo" @click="suo" v-html="fensi.rawhtml"></span>
+
+    <span class="suo" @click="suo">
+      <i :class="[fensi.faClass, fensi.unlock]" aria-hidden="true"></i>
+    </span>
 
     <div class="ul1">
       <span v-html="fensi.xiaochou"></span>
@@ -138,8 +141,9 @@ export default {
       timer: null,
       //定时器延迟
       time: 15000,
-      //锁定开关
-      rawhtml: `&#128077;`,
+      //锁图标
+      faClass: 'fa',
+      unlock: 'fa-unlock',
       //小丑图标
       xiaochou: `&#129313;`,
       //增加的粉丝数
@@ -298,10 +302,10 @@ export default {
 
     //锁定
     const suo = () => {
-      if (fensi.rawhtml === '&#128077;') {
-        fensi.rawhtml = '&#128078;'
+      if (fensi.unlock === 'fa-unlock') {
+        fensi.unlock = 'fa-lock'
       } else {
-        fensi.rawhtml = '&#128077;'
+        fensi.unlock = 'fa-unlock'
       }
       ipcRenderer.send('move')
     }
@@ -534,6 +538,7 @@ input:hover {
   position: absolute;
   right: 0;
   top: 0;
+  margin-top: 5px;
   margin-right: 60px;
   width: 20px;
   height: 20px;
