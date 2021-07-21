@@ -64,6 +64,15 @@ ipcMain.on('fans', (event, data) => {
   })
 })
 
+//根据id获取粉丝数和关注数
+let idfans = async (id) => {
+  //27856360
+  let url = `https://api.bilibili.com/x/relation/stat?vmid=${id}&jsonp=jsonp`
+  let response = await axios.get(url)
+  let data = await response.data
+  return data
+}
+
 //监听播放量
 ipcMain.on('play', (event, data) => {
   //async 要用then()接收
@@ -89,15 +98,6 @@ ipcMain.on('play', (event, data) => {
     .catch((e) => console.log(e))
 })
 
-//根据id获取粉丝数和关注数
-let idfans = async (id) => {
-  //27856360
-  let url = `https://api.bilibili.com/x/relation/stat?vmid=${id}&jsonp=jsonp`
-  let response = await axios.get(url)
-  let data = await response.data
-  return data
-}
-
 //根据id获取评论量和播放数和弹幕数
 let idplay = async (id) => {
   let url = `https://api.bilibili.com/x/space/arc/search?mid=${id}&pn=1&ps=25&index=1&jsonp=jsonp`
@@ -119,6 +119,27 @@ let idplay = async (id) => {
   //promise 要用then接收
   await startget()
   return sum
+}
+
+//监听用户名
+ipcMain.on('name', (event, data) => {
+  //async 要用then()接收
+  idname(data.id)
+    .then((response) => {
+      //返回数据
+      event.reply('namebili', {
+        name: response.data.name
+      })
+    })
+    .catch((e) => console.log(e))
+})
+
+//获取B站用户名
+let idname = async (id) => {
+  let url = `https://api.bilibili.com/x/space/acc/info?mid=${id}&jsonp=jsonp`
+  let response = await axios.get(url)
+  let data = await response.data
+  return data
 }
 
 app.on('window-all-closed', () => {
