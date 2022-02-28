@@ -233,29 +233,15 @@ export default {
     ipcRenderer.on('fansbili', (event, arg) => {
       let { follower, following } = arg
       //粉丝数大于之前粉丝则添加+号
-      if (follower > fensi.follower) {
-        fensi.a.add = true
-      } else {
-        fensi.a.add = false
-      }
-
-      if (following > fensi.following) {
-        fensi.b.add = true
-      } else {
-        fensi.b.add = false
-      }
+      fensi.a.add = follower > fensi.follower ? true : false
+      fensi.b.add = following > fensi.following ? true : false
 
       fensi.a.number = follower - fensi.follower
       fensi.b.number = following - fensi.following
 
       //增加的粉丝不为0则开启动画过渡
-      if (fensi.a.number !== 0) {
-        fensi.a.flash = true
-      }
-
-      if (fensi.b.number !== 0) {
-        fensi.b.flash = true
-      }
+      fensi.a.flash = fensi.a.number !== 0 ? true : false
+      fensi.b.flash = fensi.b.number !== 0 ? true : false
 
       fensi.follower = follower //当前粉丝数
       fensi.following = following //当前关注数
@@ -278,41 +264,23 @@ export default {
     ipcRenderer.on('playbili', (event, arg) => {
       let { sum, comment, video_review } = arg
       console.log(arg)
-      //播放数大于之前粉丝则添加+号
-      if (sum > fensi.sum) {
-        fensi.c.add = true
-      } else {
-        fensi.c.add = false
-      }
+      // 播放数大于之前粉丝则添加+号
+      // 播放量+号
+      fensi.c.add = sum > fensi.sum ? true : false
+      // 评论量+号
+      fensi.d.add = comment > fensi.comment ? true : false
+      // 弹幕数+号
+      fensi.e.add = video_review > fensi.video_review ? true : false
 
-      if (comment > fensi.comment) {
-        fensi.d.add = true
-      } else {
-        fensi.d.add = false
-      }
-
-      if (video_review > fensi.video_review) {
-        fensi.e.add = true
-      } else {
-        fensi.e.add = false
-      }
-
+      //  增加的播放、评论、弹幕
       fensi.c.number = sum - fensi.sum
       fensi.d.number = comment - fensi.comment
       fensi.e.number = video_review - fensi.video_review
 
-      //增加的粉丝不为0则开启动画过渡
-      if (fensi.c.number !== 0) {
-        fensi.c.flash = true
-      }
-
-      if (fensi.d.number !== 0) {
-        fensi.d.flash = true
-      }
-
-      if (fensi.e.number !== 0) {
-        fensi.e.flash = true
-      }
+      // 增加的粉丝不为0则开启动画过渡
+      fensi.c.flash = fensi.c.number !== 0 ? true : false
+      fensi.d.flash = fensi.d.number !== 0 ? true : false
+      fensi.e.flash = fensi.e.number !== 0 ? true : false
 
       fensi.sum = sum
       fensi.comment = comment
@@ -351,11 +319,7 @@ export default {
 
     //锁定
     const suo = () => {
-      if (fensi.unlock === 'fa-unlock') {
-        fensi.unlock = 'fa-lock'
-      } else {
-        fensi.unlock = 'fa-unlock'
-      }
+      fensi.unlock = fensi.unlock === 'fa-unlock' ? 'fa-lock' : 'fa-unlock'
       ipcRenderer.send('move')
     }
 
@@ -382,12 +346,14 @@ export default {
 }
 span {
   //取消文本选择
-  user-select: none;
-  -webkit-app-region: drag;
 }
 .ul1 {
   list-style: none;
   padding: 0;
+  span {
+    user-select: none;
+    -webkit-app-region: drag;
+  }
   .span1 {
     font-size: 16px;
   }
@@ -444,6 +410,9 @@ span {
   width: 600px;
   span {
     font-size: 16px;
+    //取消文本选择
+    user-select: none;
+    -webkit-app-region: drag;
   }
   li {
     //取消文本选择

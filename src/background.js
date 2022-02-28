@@ -109,9 +109,10 @@ let idplay = async (id) => {
     //根据总视频判断循环次数
     //ps视频数(上限100)
     //pn为页数
-    for (let i = 1; i <= Math.floor(count / 90) + 1; i++) {
-      let geturl = `https://api.bilibili.com/x/space/arc/search?mid=${id}&ps=90&tid=0&pn=${i}&keyword=&order=pubdate&jsonp=jsonp`
+    for (let i = 1; i <= Math.floor(count / 50) + 1; i++) {
+      let geturl = `https://api.bilibili.com/x/space/arc/search?mid=${id}&ps=50&tid=0&pn=${i}&keyword=&order=pubdate&jsonp=jsonp`
       let response = await axios.get(geturl)
+      console.log(response.data)
       vlist = response.data.data.list.vlist
       sum = sum.concat(vlist) //合并数组返回新对象
     }
